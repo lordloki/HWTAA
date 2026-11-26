@@ -1,0 +1,15 @@
+\begin{tabular}{lrrrrrrr}
+\toprule
+Method & Render px & PSNR motion $\uparrow$ & PSNR all $\uparrow$ & \FLIP $\downarrow$ & SSIM $\uparrow$ & Flicker $\downarrow$ & Wins \\
+\midrule
+No AA & 100\,\% & 27.14 & 27.62 & 0.0467 & 0.777 & 24.3 &  \\
+TAA\textsubscript{pt} & 100\,\% & 29.68 & 30.04 & 0.0487 & 0.859 & 11.9 &  \\
+TAA\textsubscript{G} & 100\,\% & 29.38 & 29.45 & 0.0409 & 0.825 & 12.8 &  \\
+\midrule
+HWTAA Native & 100\,\% & 35.56 & 35.81 & 0.0236 & 0.965 & 7.1 & 13/13 \\
+HWTAA U.\,Qual. & 59\,\% & 33.58 & 33.98 & 0.0309 & 0.943 & 8.8 & 13/13 \\
+HWTAA Quality & 44\,\% & 32.54 & 32.90 & 0.0340 & 0.931 & 9.8 & 13/13 \\
+HWTAA Balanced & 35\,\% & 31.25 & 31.85 & 0.0398 & 0.908 & 11.1 & 12/13 \\
+HWTAA Perf. & 25\,\% & 30.40 & 31.07 & 0.0419 & 0.891 & 12.0 & 10/13 \\
+\bottomrule
+\end{tabular}

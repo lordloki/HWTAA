@@ -1,0 +1,31 @@
+#version 430
+/* SPDX-FileCopyrightText: 2026 UPBGE Authors
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later */
+
+// Textbook TAA (Karis 2014 style): 3x3 YCoCg min/max clamp, velocity reprojection,
+// bilinear history, exponential blend 0.1. Native resolution, one dispatch.
+layout(local_size_x = 8, local_size_y = 8) in;
+layout(binding = 0) uniform sampler2D color_tx;
+layout(binding = 1) uniform sampler2D velocity_tx;
+layout(binding = 2) uniform sampler2D history_tx;
+layout(binding = 0, rgba16f) writeonly uniform image2D history_out_img;
+uniform ivec2 size;
+vec3 to_ycocg(vec3 c) { return vec3(dot(c, vec3(0.25, 0.5, 0.25)), dot(c, vec3(0.5, 0, -0.5)), dot(c, vec3(-0.25, 0.5, -0.25))); }
+vec3 to_rgb(vec3 y) { return vec3(y.x + y.y - y.z, y.x + y.z, y.x - y.y - y.z); }
+void main() {
+  ivec2 px = ivec2(gl_GlobalInvocationID.xy);
+  if (any(greaterThanEqual(px, size))) return;
+  vec3 lo = vec3(1e30), hi = vec3(-1e30), center = vec3(0);
+  for (int i = 0; i < 9; i++) {
+    ivec2 o = ivec2(i % 3, i / 3) - 1;
+    vec3 c = to_ycocg(texelFetch(color_tx, clamp(px + o, ivec2(0), size - 1), 0).rgb);
+    lo = min(lo, c); hi = max(hi, c);
+    if (i == 4) center = c;
+  }
+  vec2 uv = (vec2(px) + 0.5) / vec2(size);
+  vec2 uv_prev = uv - texelFetch(velocity_tx, px, 0).xy;
+  vec3 h = to_ycocg(textureLod(history_tx, uv_prev, 0.0).rgb);
+  h = clamp(h, lo, hi);
+  imageStore(history_out_img, px, vec4(to_rgb(mix(h, center, 0.1)), 1.0));
+}

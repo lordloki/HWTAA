@@ -1,0 +1,15 @@
+\begin{tabular}{lrrlrr}
+\toprule
+Variant & $\Delta$ Native & $\Delta$ Quality & \multicolumn{3}{c}{Targeted region} \\
+\cmidrule(lr){4-6}
+ & dB & dB & & Native & Quality \\
+\midrule
+History only (no window) & $-5.65$ & $-4.41$ & uncovered (pan) & $+50$\,\% & $+31$\,\% \\
+Window only (no history) & $-0.30$ & $-0.03$ & flicker (static) & $+161$\,\% & $+147$\,\% \\
+No missing-weight fill & $-0.35$ & $-0.37$ & uncovered (pan) & $+27$\,\% & $+25$\,\% \\
+No luma locks & $-2.56$ & $-2.88$ & sky (fast floor) & $+25$\,\% & $+3$\,\% \\
+No thin-foreground rule & $-0.22$ & $-0.16$ & cables (cables) & $+12$\,\% & $+12$\,\% \\
+No window on deformed meshes & $-0.59$ & $-0.72$ & deformed disk (deform) & $+62$\,\% & $+104$\,\% \\
+No reactive mask & $-2.27$ & $-1.44$ & smoke trail (smoke) & $+133$\,\% & $+140$\,\% \\
+\bottomrule
+\end{tabular}

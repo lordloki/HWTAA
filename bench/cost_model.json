@@ -1,0 +1,35 @@
+{
+ "about": "Static cost of the production shaders from the AMD ACO compiler (Mesa RADV, Polaris10 null device, glslang to SPIR-V): inverse throughput per 64-wide wave. Time on an RX 590 (Polaris 30, 36 CUs, 1.545 GHz; GTX 1060 class) = calibration * waves_per_simd * invthr / clock. At 1080p output a full-screen dispatch is 32400 waves, 225 per SIMD. The calibration 1.46 maps FSR 2.2's shaders, compiled the same way, to AMD's measured 1.3 ms (1080p Quality, RX 590). The store pass scales with the render pixels. A pass also takes at least its DRAM traffic over the RX 590's 256 GB/s (GTX 1060: 192 GB/s). The traffic model below is a lower bound; times are the larger of the ALU estimate and the traffic at 192 GB/s, the slower of the two GPUs.",
+ "resolve": {
+  "still_invthr": 2688,
+  "moving_base_invthr": 1793,
+  "per_window_frame_invthr": 569,
+  "vgpr": 64,
+  "waves_per_simd": 4
+ },
+ "store": {
+  "invthr": 722
+ },
+ "calibration": 1.46,
+ "clock_hz": 1545000000.0,
+ "waves_per_simd_1080p": 225,
+ "traffic_bytes": {
+  "per_render_texel": {
+   "store": 22,
+   "resolve_inputs": 23,
+   "previous_layer": 8,
+   "per_window_frame": 8
+  },
+  "per_output_pixel": {
+   "history_and_locks": 20
+  },
+  "bandwidth_bytes_per_s": 192000000000.0,
+  "note": "store: color 8 + depth 4 + object id 2 + ring write 8; resolve inputs: color 8 + ring 8 + depth 4 + id 2 + reactive 1; history RGBA16F and locks RG8 read and written. Floored at the GTX 1060's 192 GB/s, the slower of the two."
+ },
+ "memory_bytes": {
+  "ring_per_render_texel_per_frame": 8,
+  "fixed_per_output_pixel": 20,
+  "object_id_per_render_texel": 2,
+  "reactive_per_render_texel": 5
+ }
+}
